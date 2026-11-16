@@ -72,9 +72,9 @@ uninstall:
 # Source tarball for packaging/arch/PKGBUILD.
 dist: $(TARBALL)
 
-$(TARBALL): Cargo.toml Cargo.lock Makefile README.md $(shell find src tests data shell extension -type f ! -name gschemas.compiled)
+$(TARBALL): Cargo.toml Cargo.lock LICENSE Makefile README.md $(shell find src tests data shell extension -type f ! -name gschemas.compiled)
 	tar --exclude=gschemas.compiled --transform 's,^,arch-update-notifier-$(VERSION)/,' \
-		-czf $@ Cargo.toml Cargo.lock Makefile README.md src tests data shell extension
+		-czf $@ Cargo.toml Cargo.lock LICENSE Makefile README.md src tests data shell extension
 	@echo "Wrote $@"
 
 # extensions.gnome.org style zip (schemas are compiled on install since GNOME 44).
