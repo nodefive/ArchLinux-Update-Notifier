@@ -1,0 +1,4 @@
+[1mparu[0m [1;31m2.1.0-1[0m -> [1;32m2.1.1-1[0m
+[1mvisual-studio-code-bin[0m [1;31m1.105.1-1[0m -> [1;32m1.106.0-1[0m
+warning: devel check skipped for some-local-pkg
+zen-browser-bin 1.17.5b-1 -> 1.17.6b-1

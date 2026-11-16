@@ -1,0 +1,26 @@
+[Unit]
+Description=Arch Linux update checker (repo, AUR, Flatpak, Snap)
+Documentation=https://github.com/nodefive/ArchLinux-Update-Notifier
+
+[Service]
+# Type=dbus: the unit counts as started once the bus name is acquired, and
+# D-Bus activation (CheckNow from the extension) maps to this unit.
+Type=dbus
+BusName=io.github.nodefive.ArchUpdateNotifier
+ExecStart=@BINDIR@/arch-update-notifier
+Restart=on-failure
+RestartSec=30
+
+# Background work: keep it out of the way of the desktop.
+Nice=10
+IOSchedulingClass=idle
+CPUSchedulingPolicy=batch
+
+# The checks never need privileges (no sudo, no setuid helpers).
+NoNewPrivileges=yes
+LockPersonality=yes
+RestrictRealtime=yes
+UMask=0077
+
+[Install]
+WantedBy=default.target

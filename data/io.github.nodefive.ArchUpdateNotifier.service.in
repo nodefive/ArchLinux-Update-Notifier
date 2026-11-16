@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=io.github.nodefive.ArchUpdateNotifier
+Exec=@BINDIR@/arch-update-notifier
+SystemdService=arch-update-notifier.service

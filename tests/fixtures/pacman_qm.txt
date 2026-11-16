@@ -1,0 +1,5 @@
+google-chrome 142.0.7444.59-1
+my-local-build 1.0-1
+spotify 1:1.2.74.477-1
+yay-bin 13.1.0-1
+zoom 6.6.6-1

@@ -1,0 +1,10 @@
+{
+  "uuid": "arch-update-notifier@nodefive.github.io",
+  "name": "Arch Update Notifier",
+  "description": "Shows pending Arch Linux updates (official repositories, AUR, Flatpak, Snap) in the top bar. Requires the arch-update-notifier daemon, which performs the checks outside the shell process.",
+  "shell-version": ["50", "51"],
+  "settings-schema": "org.gnome.shell.extensions.arch-update-notifier",
+  "gettext-domain": "arch-update-notifier",
+  "url": "https://github.com/nodefive/ArchLinux-Update-Notifier",
+  "version-name": "0.1.0"
+}

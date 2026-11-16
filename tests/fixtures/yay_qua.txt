@@ -1,0 +1,5 @@
+:: Searching AUR for updates...
+ -> Packages not in the AUR: my-local-build
+google-chrome 142.0.7444.59-1 -> 142.0.7444.162-1
+neovim-git 0.12.0.r1234.gabcdef-1 -> latest-commit
+yay-bin 13.1.0-1 -> 13.1.1-1

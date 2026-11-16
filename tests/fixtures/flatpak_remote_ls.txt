@@ -1,0 +1,5 @@
+Ref	Version	Commit
+org.mozilla.firefox/x86_64/stable	145.0.1	9f8e7d6c5b4a
+org.gnome.Platform/x86_64/50	50.1	bbbbbbbbbbbb
+org.freedesktop.Platform.GL.default/x86_64/25.08		0002deadbeef
+org.mozilla.firefox/x86_64/stable	145.0.1	9f8e7d6c5b4a

@@ -1,0 +1,88 @@
+# Build from a source checkout:
+#   make dist && cd packaging/arch && makepkg -si
+# For a published release, point source=() at the release tarball and run
+# updpkgsums.
+#
+# The package name differs from the program name on purpose: an unrelated
+# AUR package is called "arch-update-notifier", and AUR helpers match foreign
+# packages by name (they would report it as an update and replace this one).
+
+pkgname=arch-node5-update-notifier
+_name=arch-update-notifier
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Update checker daemon, terminal summary and GNOME Shell indicator for Arch Linux'
+arch=('x86_64' 'aarch64')
+url='https://github.com/nodefive/ArchLinux-Update-Notifier'
+license=('GPL-2.0-or-later')
+depends=(
+  'bash'
+  'dbus'
+  'fakeroot'        # required by checkupdates
+  'gcc-libs'
+  'glib2'
+  'glibc'
+  'pacman-contrib'  # checkupdates
+)
+makedepends=('cargo')
+optdepends=(
+  'gnome-shell: top bar indicator and preferences window'
+  'paru: AUR checks through paru'
+  'yay: AUR checks through yay'
+  'flatpak: Flatpak update checks'
+  'snapd: Snap update checks'
+  'jq: terminal message fallback when summary.txt is missing'
+  'networkmanager: skip checks when offline or on metered connections'
+)
+# Same files as the old local package name and the unrelated AUR package.
+conflicts=('arch-update-notifier')
+# makepkg's -flto turns ring's C objects into GCC LTO bitcode that rust-lld
+# cannot link. Rust-side LTO is still set in Cargo.toml [profile.release].
+options=('!lto')
+source=("$_name-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+_uuid='arch-update-notifier@nodefive.github.io'
+
+prepare() {
+  cd "$_name-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+  cd "$_name-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release --all-features
+  glib-compile-schemas --strict "extension/$_uuid/schemas"
+  sed 's|@BINDIR@|/usr/bin|' data/arch-update-notifier.service.in > arch-update-notifier.service
+  sed 's|@BINDIR@|/usr/bin|' data/io.github.nodefive.ArchUpdateNotifier.service.in \
+    > io.github.nodefive.ArchUpdateNotifier.service
+}
+
+check() {
+  cd "$_name-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo test --frozen --all-features
+}
+
+package() {
+  cd "$_name-$pkgver"
+  install -Dm755 "target/release/$_name" "$pkgdir/usr/bin/$_name"
+  install -Dm644 arch-update-notifier.service \
+    "$pkgdir/usr/lib/systemd/user/arch-update-notifier.service"
+  install -Dm644 io.github.nodefive.ArchUpdateNotifier.service \
+    "$pkgdir/usr/share/dbus-1/services/io.github.nodefive.ArchUpdateNotifier.service"
+  install -Dm644 shell/arch-update-notifier.bash \
+    "$pkgdir/usr/share/$_name/arch-update-notifier.bash"
+
+  local ext="$pkgdir/usr/share/gnome-shell/extensions/$_uuid"
+  install -d "$ext"
+  cp -r --no-preserve=ownership,mode "extension/$_uuid/." "$ext/"
+  find "$ext" -type d -exec chmod 755 {} +
+  find "$ext" -type f -exec chmod 644 {} +
+
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

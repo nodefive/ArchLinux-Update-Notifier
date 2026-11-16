@@ -1,0 +1,4 @@
+org.mozilla.firefox/x86_64/stable	145.0	1a2b3c4d5e6f
+org.gnome.Platform/x86_64/50	50.1	aaaaaaaaaaaa
+com.spotify.Client/x86_64/stable	1.2.74.477	0123456789ab
+org.freedesktop.Platform.GL.default/x86_64/25.08		0001deadbeef

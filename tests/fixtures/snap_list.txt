@@ -1,0 +1,4 @@
+Name      Version          Rev    Tracking         Publisher   Notes
+core22    20250923         2139   latest/stable    canonical✓  base
+firefox   144.0.2-1        7084   latest/stable/…  mozilla✓    -
+snapd     2.72             25202  latest/stable    canonical✓  snapd

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Single source of truth for the extension, its preferences and the
+  arch-update-notifier daemon (which loads this schema from the extension's
+  schemas/ directory). Keep defaults in sync with src/config.rs.
+-->
+<schemalist gettext-domain="arch-update-notifier">
+  <schema id="org.gnome.shell.extensions.arch-update-notifier"
+          path="/org/gnome/shell/extensions/arch-update-notifier/">
+
+    <!-- Checking -->
+    <key name="check-interval" type="u">
+      <default>60</default>
+      <range min="5" max="1440"/>
+      <summary>Check interval (minutes)</summary>
+    </key>
+    <key name="initial-delay" type="u">
+      <default>60</default>
+      <range min="0" max="3600"/>
+      <summary>Delay before the first check after the daemon starts (seconds)</summary>
+    </key>
+    <key name="check-repo" type="b">
+      <default>true</default>
+      <summary>Check official repositories (checkupdates)</summary>
+    </key>
+    <key name="check-aur" type="b">
+      <default>true</default>
+      <summary>Check the AUR</summary>
+    </key>
+    <key name="check-flatpak" type="b">
+      <default>true</default>
+      <summary>Check Flatpak</summary>
+    </key>
+    <key name="check-snap" type="b">
+      <default>false</default>
+      <summary>Check Snap</summary>
+    </key>
+    <key name="aur-helper" type="s">
+      <choices>
+        <choice value="auto"/>
+        <choice value="paru"/>
+        <choice value="yay"/>
+        <choice value="rpc"/>
+      </choices>
+      <default>'auto'</default>
+      <summary>AUR backend</summary>
+      <description>auto: paru, then yay, then the AUR RPC. rpc: query aur.archlinux.org directly.</description>
+    </key>
+    <key name="timeout-repo" type="u">
+      <default>180</default>
+      <range min="10" max="3600"/>
+      <summary>Timeout for the repository check (seconds)</summary>
+    </key>
+    <key name="timeout-aur" type="u">
+      <default>120</default>
+      <range min="10" max="3600"/>
+      <summary>Timeout for the AUR check (seconds)</summary>
+    </key>
+    <key name="timeout-flatpak" type="u">
+      <default>120</default>
+      <range min="10" max="3600"/>
+      <summary>Timeout for the Flatpak check (seconds)</summary>
+    </key>
+    <key name="timeout-snap" type="u">
+      <default>60</default>
+      <range min="10" max="3600"/>
+      <summary>Timeout for the Snap check (seconds)</summary>
+    </key>
+    <key name="unmetered-only" type="b">
+      <default>false</default>
+      <summary>Only run scheduled checks on unmetered connections</summary>
+    </key>
+
+    <!-- Notifications -->
+    <key name="notify-enabled" type="b">
+      <default>true</default>
+      <summary>Show desktop notifications</summary>
+    </key>
+    <key name="notify-min-count" type="u">
+      <default>1</default>
+      <range min="1" max="1000"/>
+      <summary>Minimum number of updates before notifying</summary>
+    </key>
+    <key name="notify-only-increase" type="b">
+      <default>false</default>
+      <summary>Notify only when the number of updates increased</summary>
+    </key>
+
+    <!-- Terminal message -->
+    <key name="terminal-enabled" type="b">
+      <default>true</default>
+      <summary>Show the message in interactive shells</summary>
+    </key>
+    <key name="terminal-hide-zero" type="b">
+      <default>true</default>
+      <summary>Print nothing when there are no updates</summary>
+    </key>
+    <key name="terminal-show-breakdown" type="b">
+      <default>true</default>
+      <summary>Show the per-source breakdown</summary>
+    </key>
+    <key name="terminal-list-max" type="u">
+      <default>5</default>
+      <range min="0" max="100"/>
+      <summary>List package names when there are at most this many updates (0 = never)</summary>
+    </key>
+    <key name="terminal-stale-hours" type="u">
+      <default>24</default>
+      <range min="0" max="8760"/>
+      <summary>Warn when the last successful check is older than this many hours (0 = never)</summary>
+    </key>
+
+    <!-- Indicator -->
+    <key name="indicator-show-count" type="b">
+      <default>true</default>
+      <summary>Show the update count next to the icon</summary>
+    </key>
+    <key name="indicator-hide-zero" type="b">
+      <default>false</default>
+      <summary>Hide the indicator when there are no updates</summary>
+    </key>
+    <key name="panel-position" type="s">
+      <choices>
+        <choice value="left"/>
+        <choice value="center"/>
+        <choice value="right"/>
+      </choices>
+      <default>'right'</default>
+      <summary>Panel box for the indicator</summary>
+    </key>
+    <key name="icon-style" type="s">
+      <choices>
+        <choice value="package"/>
+        <choice value="arrow"/>
+        <choice value="theme"/>
+      </choices>
+      <default>'package'</default>
+      <summary>Indicator icon set</summary>
+    </key>
+
+    <!-- Upgrade action -->
+    <key name="terminal-app" type="s">
+      <choices>
+        <choice value="auto"/>
+        <choice value="ptyxis"/>
+        <choice value="kgx"/>
+        <choice value="gnome-terminal"/>
+        <choice value="kitty"/>
+        <choice value="alacritty"/>
+        <choice value="custom"/>
+      </choices>
+      <default>'auto'</default>
+      <summary>Terminal emulator for "Upgrade now"</summary>
+    </key>
+    <key name="terminal-custom" type="s">
+      <default>''</default>
+      <summary>Custom terminal command</summary>
+      <description>Command line for the custom terminal. {cmd} is replaced by the bash argv (bash -c SCRIPT) as separate arguments, e.g. "foot --title Upgrade {cmd}". Without {cmd} the bash argv is appended.</description>
+    </key>
+    <key name="upgrade-commands" type="as">
+      <default>[]</default>
+      <summary>Upgrade commands, run in order</summary>
+      <description>Empty: automatic (paru/yay -Syu or sudo pacman -Syu, then flatpak update when enabled).</description>
+    </key>
+
+    <!-- Advanced -->
+    <key name="log-level" type="s">
+      <choices>
+        <choice value="error"/>
+        <choice value="warn"/>
+        <choice value="info"/>
+        <choice value="debug"/>
+        <choice value="trace"/>
+      </choices>
+      <default>'info'</default>
+      <summary>Daemon log level</summary>
+    </key>
+    <key name="ignore-list" type="as">
+      <default>[]</default>
+      <summary>Packages excluded from the count (globs: * and ?)</summary>
+    </key>
+  </schema>
+</schemalist>
