@@ -9,7 +9,7 @@
 
 pkgname=arch-node5-update-notifier
 _name=arch-update-notifier
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc='Update checker daemon, terminal summary and GNOME Shell indicator for Arch Linux'
 arch=('x86_64' 'aarch64')

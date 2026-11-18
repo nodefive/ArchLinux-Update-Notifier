@@ -96,8 +96,20 @@ systemctl --user daemon-reload
 systemctl --user enable --now arch-update-notifier.service
 ```
 
-The D-Bus activation file also starts the service on demand (for example
-when "Check now" is clicked while it is stopped).
+The unit is wanted by both `default.target` and `graphical-session.target`.
+GNOME stops the session bus at logout, which stops the daemon (`Type=dbus`);
+the user manager keeps running across a quick logout/login, so only the
+graphical-session target brings it back. The D-Bus activation file also starts
+the service on demand (for example when "Check now" is clicked while it is
+stopped).
+
+Upgrading from 0.1.0: the `[Install]` section changed, and existing enable
+symlinks are not updated by the package. Run once:
+
+```sh
+systemctl --user daemon-reload
+systemctl --user reenable --now arch-update-notifier.service
+```
 
 Extension (log out and back in first after a fresh install, Wayland does not
 load new extensions into a running session):

@@ -23,4 +23,9 @@ RestrictRealtime=yes
 UMask=0077
 
 [Install]
-WantedBy=default.target
+# Type=dbus implies Requires=dbus.socket, so the service stops when GNOME
+# stops the session bus at logout. The user manager keeps running across a
+# quick logout/login, so default.target is not reached again; the GNOME
+# login does start graphical-session.target, which brings the service back.
+# default.target still covers boots without a graphical login (SSH only).
+WantedBy=default.target graphical-session.target

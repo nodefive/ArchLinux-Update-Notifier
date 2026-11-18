@@ -6,5 +6,5 @@
   "settings-schema": "org.gnome.shell.extensions.arch-update-notifier",
   "gettext-domain": "arch-update-notifier",
   "url": "https://github.com/nodefive/ArchLinux-Update-Notifier",
-  "version-name": "0.1.0"
+  "version-name": "0.1.1"
 }
